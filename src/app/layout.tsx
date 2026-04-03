@@ -18,6 +18,35 @@ export const metadata: Metadata = {
   title: "Livinexo — Modern Household Manager",
   description:
     "A next-generation platform for managing modern living. Track expenses, split costs, and get insights.",
+  metadataBase: new URL("https://livinexo.vercel.app"),
+  openGraph: {
+    title: "Livinexo — Modern Household Manager",
+    description:
+      "A next-generation platform for managing modern living. Track expenses, split costs, and get insights.",
+    url: "https://livinexo.vercel.app",
+    siteName: "Livinexo",
+    images: [
+      {
+        url: "/livinexo-logo.png",
+        width: 1024,
+        height: 576,
+        alt: "Livinexo",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Livinexo — Modern Household Manager",
+    description:
+      "A next-generation platform for managing modern living. Track expenses, split costs, and get insights.",
+    images: ["/livinexo-logo.png"],
+  },
+  icons: {
+    icon: "/livinexo-mark.png",
+    shortcut: "/livinexo-mark.png",
+    apple: "/livinexo-mark.png",
+  },
 };
 
 export default function RootLayout({

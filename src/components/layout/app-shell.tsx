@@ -6,9 +6,9 @@ import { Footer } from "./footer";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLanding = pathname === "/";
+  const isPublicPage = pathname === "/" || pathname === "/app-cooking";
 
-  if (isLanding) {
+  if (isPublicPage) {
     return <>{children}</>;
   }
 

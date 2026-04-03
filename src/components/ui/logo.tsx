@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface LogoMarkProps {
   size?: "sm" | "md" | "lg" | "xl";
@@ -14,25 +15,22 @@ const markSizes = {
   xl: "w-14 h-14 rounded-2xl",
 };
 
-const textSizes = {
-  sm: "text-[8px]",
-  md: "text-[10px]",
-  lg: "text-xs",
-  xl: "text-sm",
-};
-
 export function LogoMark({ size = "md", className }: LogoMarkProps) {
   return (
     <div
       className={cn(
-        "bg-gradient-to-br from-haveli-400 to-haveli-700 flex items-center justify-center shadow-lg shadow-haveli-600/20",
+        "relative overflow-hidden shadow-lg shadow-haveli-600/20",
         markSizes[size],
         className
       )}
     >
-      <span className={cn("text-white font-bold tracking-tight", textSizes[size])}>
-        LX
-      </span>
+      <Image
+        src="/livinexo-mark.png"
+        alt="Livinexo logo mark"
+        fill
+        className="object-contain"
+        sizes="56px"
+      />
     </div>
   );
 }

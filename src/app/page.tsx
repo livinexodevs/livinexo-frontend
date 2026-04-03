@@ -21,6 +21,7 @@ import {
   Bell,
   MousePointer2,
 } from "lucide-react";
+import { LogoMark } from "@/components/ui/logo";
 import { Footer } from "@/components/layout/footer";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -663,19 +664,10 @@ export default function LandingPage() {
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <div
-                className={`rounded-xl bg-gradient-to-br from-haveli-400 to-haveli-700 flex items-center justify-center shadow-lg shadow-haveli-600/25 transition-all duration-500 ${
-                  navScrolled ? "w-7 h-7 rounded-lg" : "w-9 h-9"
-                }`}
-              >
-                <span
-                  className={`text-white font-bold tracking-tight transition-all duration-500 ${
-                    navScrolled ? "text-[8px]" : "text-[10px]"
-                  }`}
-                >
-                  LX
-                </span>
-              </div>
+              <LogoMark
+                size={navScrolled ? "sm" : "md"}
+                className="shadow-lg shadow-haveli-600/25 transition-all duration-500"
+              />
               <span
                 className={`font-bold text-sand-900 tracking-tight transition-all duration-500 ${
                   navScrolled ? "text-base" : "text-lg"
@@ -702,7 +694,7 @@ export default function LandingPage() {
                 How it Works
               </a>
               <Link
-                href="/dashboard"
+                href="/app-cooking"
                 className={`inline-flex items-center gap-1.5 font-medium text-white transition-all active:scale-[0.97] shadow-lg shadow-sand-900/10 ${
                   navScrolled
                     ? "px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-sand-900 text-xs sm:text-sm hover:bg-sand-800"
@@ -784,7 +776,7 @@ export default function LandingPage() {
             className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
           >
             <Link
-              href="/dashboard"
+              href="/app-cooking"
               className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-haveli-600 to-haveli-700 text-white font-semibold text-base overflow-hidden shadow-2xl shadow-haveli-600/25 hover:shadow-haveli-600/40 active:scale-[0.97] transition-all duration-200"
             >
               <span className="relative z-10 flex items-center gap-3">
@@ -1140,9 +1132,10 @@ export default function LandingPage() {
             />
 
             <div className="relative">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-haveli-400 to-haveli-700 flex items-center justify-center mx-auto mb-7 sm:mb-9 shadow-2xl shadow-haveli-600/30">
-                <span className="text-white font-bold text-lg sm:text-2xl tracking-tight">LX</span>
-              </div>
+              <LogoMark
+                size="xl"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl mx-auto mb-7 sm:mb-9 shadow-2xl shadow-haveli-600/30"
+              />
 
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-4 sm:mb-5 leading-tight">
                 Ready to take control of
@@ -1171,7 +1164,7 @@ export default function LandingPage() {
               </div>
 
               <Link
-                href="/dashboard"
+                href="/app-cooking"
                 className="group relative inline-flex items-center gap-3 px-9 py-4 sm:px-10 sm:py-5 rounded-2xl bg-gradient-to-r from-haveli-500 to-haveli-600 text-white font-semibold text-base sm:text-lg overflow-hidden shadow-2xl shadow-haveli-600/40 hover:shadow-haveli-600/60 active:scale-[0.97] transition-all duration-200"
               >
                 <span className="relative z-10 flex items-center gap-3">
