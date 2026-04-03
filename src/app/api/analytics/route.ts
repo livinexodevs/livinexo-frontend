@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { format, subMonths, startOfMonth } from "date-fns";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const [allExpenses, members, splits] = await Promise.all([
