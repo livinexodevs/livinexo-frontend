@@ -2,8 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Player } from "@lottiefiles/react-lottie-player";
+import dynamic from "next/dynamic";
 import { LogoMark } from "@/components/ui/logo";
+
+const LottiePlayer = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false }
+);
 
 export default function AppCookingPage() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -68,7 +73,7 @@ export default function AppCookingPage() {
           className="mt-6 sm:mt-8 mx-auto max-w-xs hover:scale-[1.03] transition-transform duration-300"
           style={{ filter: "sepia(1) saturate(2.2) hue-rotate(-12deg) brightness(0.98)" }}
         >
-          <Player
+          <LottiePlayer
             autoplay
             loop
             src="https://assets10.lottiefiles.com/packages/lf20_usmfx6bp.json"
