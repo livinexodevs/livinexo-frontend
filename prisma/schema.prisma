@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  expensesAdded ExpenseItem[]  @relation("AddedBy")
+  splits        ExpenseSplit[]
+}
+
+model ExpenseItem {
+  id           String   @id @default(cuid())
+  itemName     String
+  quantity     Float    @default(1)
+  quantityUnit String   @default("pcs")
+  price        Float
+  totalAmount  Float
+  purchaseDate DateTime
+  notes        String?
+  category     String   @default("General")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  addedById String
+  addedBy   Member @relation("AddedBy", fields: [addedById], references: [id], onDelete: Cascade)
+
+  splits ExpenseSplit[]
+}
+
+model ExpenseSplit {
+  id        String   @id @default(cuid())
+  amount    Float
+  settled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  expenseId String
+  expense   ExpenseItem @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([expenseId, memberId])
+}
