@@ -1,10 +1,10 @@
-import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
+    const { prisma } = await import("@/lib/prisma");
     const members = await prisma.member.findMany({
       orderBy: { createdAt: "desc" },
       include: {
@@ -23,6 +23,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const { prisma } = await import("@/lib/prisma");
     const body = await request.json();
     const { name, email } = body;
 

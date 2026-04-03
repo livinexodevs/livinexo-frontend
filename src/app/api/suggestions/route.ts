@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { searchHouseholdItems } from "@/lib/household-items";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,6 +5,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
+    const { prisma } = await import("@/lib/prisma");
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("q")?.trim() || "";
 

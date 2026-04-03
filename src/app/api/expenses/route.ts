@@ -1,10 +1,10 @@
-import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
+    const { prisma } = await import("@/lib/prisma");
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
     const memberId = searchParams.get("memberId");
@@ -49,6 +49,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const { prisma } = await import("@/lib/prisma");
     const body = await request.json();
     const {
       itemName,

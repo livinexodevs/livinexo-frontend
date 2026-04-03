@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +7,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { prisma } = await import("@/lib/prisma");
     const member = await prisma.member.findUnique({
       where: { id: params.id },
       include: {
@@ -38,6 +38,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { prisma } = await import("@/lib/prisma");
     const body = await request.json();
     const { name, email } = body;
 
@@ -61,6 +62,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { prisma } = await import("@/lib/prisma");
     await prisma.member.delete({ where: { id: params.id } });
     return NextResponse.json({ success: true });
   } catch (error) {

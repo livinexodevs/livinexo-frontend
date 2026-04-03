@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +7,7 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { prisma } = await import("@/lib/prisma");
     const body = await request.json();
     const { splitId, settled } = body;
 

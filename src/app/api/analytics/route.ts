@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { format, subMonths, startOfMonth } from "date-fns";
 
@@ -6,6 +5,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
+    const { prisma } = await import("@/lib/prisma");
     const [allExpenses, members, splits] = await Promise.all([
       prisma.expenseItem.findMany({
         include: { addedBy: true, splits: { include: { member: true } } },
