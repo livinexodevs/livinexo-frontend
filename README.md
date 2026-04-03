@@ -90,3 +90,4 @@ prisma/
 | `npm run db:seed` | Seed the database |
 | `npm run db:studio` | Open Prisma Studio GUI |
 | `npm run db:reset` | Reset database and re-seed |
+# livinexo-frontend
