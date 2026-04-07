@@ -60,6 +60,21 @@ export default function AppCookingPage() {
   );
   const [error, setError] = useState("");
 
+  const buildJoinRoute = () => {
+    if (typeof window === "undefined") return "/onboarding/join-house";
+
+    const params = new URLSearchParams(window.location.search);
+    const houseId = params.get("houseId");
+    const token = params.get("token");
+
+    const joinParams = new URLSearchParams();
+    if (houseId) joinParams.set("houseId", houseId);
+    if (token) joinParams.set("token", token);
+
+    const query = joinParams.toString();
+    return query ? `/onboarding/join-house?${query}` : "/onboarding/join-house";
+  };
+
   const handleSelect = async (intent: OnboardingIntent) => {
     try {
       setError("");
@@ -67,9 +82,7 @@ export default function AppCookingPage() {
       saveIntent(intent);
       const session = await signInWithGoogle();
       saveSession(session);
-      router.push(
-        intent === "create" ? "/onboarding/create-house" : "/onboarding/join-house"
-      );
+      router.push(intent === "create" ? "/onboarding/create-house" : buildJoinRoute());
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Google login failed. Please try again.";
