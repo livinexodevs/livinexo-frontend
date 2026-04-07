@@ -20,6 +20,7 @@ import {
   getHouseById,
   getSavedSession,
   listExpenses,
+  saveHouse,
   type ExpenseSummary,
   type HouseResponse,
 } from "@/lib/onboarding";
@@ -77,6 +78,7 @@ export default function HouseLandingPage({ params }: HouseLandingPageProps) {
         ]);
 
         setHouse(houseRes);
+        saveHouse(houseRes);
         setAnalytics(analyticsRes as Record<string, unknown>);
         setRecentExpenses(normalizeExpenses(expensesRes));
       } catch (err) {
