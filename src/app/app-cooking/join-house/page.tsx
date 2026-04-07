@@ -254,7 +254,7 @@ export default function JoinHousePage() {
         )}
 
         <div className="mt-4 flex flex-wrap justify-center gap-3">
-          <Link href="/onboarding" className="btn-secondary">
+          <Link href="/my-houses" className="btn-secondary">
             <ArrowLeft className="w-4 h-4" />
             Back
           </Link>

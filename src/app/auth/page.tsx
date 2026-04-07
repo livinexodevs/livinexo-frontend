@@ -30,16 +30,20 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const buildOnboardingRoute = () => {
-    if (typeof window === "undefined") return "/onboarding";
+  const buildPostLoginRoute = () => {
+    if (typeof window === "undefined") return "/my-houses";
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     const houseId = params.get("houseId");
-    const query = new URLSearchParams();
-    if (token) query.set("token", token);
-    if (houseId) query.set("houseId", houseId);
-    const serialized = query.toString();
-    return serialized ? `/onboarding?${serialized}` : "/onboarding";
+
+    if (token || houseId) {
+      const query = new URLSearchParams();
+      if (token) query.set("token", token);
+      if (houseId) query.set("houseId", houseId);
+      return `/onboarding/join-house?${query.toString()}`;
+    }
+
+    return "/my-houses";
   };
 
   const handleAuth = async () => {
@@ -48,7 +52,7 @@ export default function AuthPage() {
       setLoading(true);
       const session = await signInWithGoogle();
       saveSession(session);
-      router.push(buildOnboardingRoute());
+      router.push(buildPostLoginRoute());
     } catch (err) {
       setError(
         err instanceof Error

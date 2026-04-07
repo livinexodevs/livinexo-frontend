@@ -59,7 +59,7 @@ export default function HouseLandingPage({ params }: HouseLandingPageProps) {
   useEffect(() => {
     const session = getSavedSession();
     if (!session) {
-      router.replace("/onboarding");
+      router.replace("/auth");
       return;
     }
 

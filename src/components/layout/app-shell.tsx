@@ -10,6 +10,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     pathname === "/" ||
     pathname.startsWith("/auth") ||
     pathname.startsWith("/onboarding") ||
+    pathname.startsWith("/my-houses") ||
     pathname.startsWith("/app-cooking");
 
   if (isPublicPage) {

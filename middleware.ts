@@ -13,6 +13,7 @@ export function middleware(request: NextRequest) {
   const isRoot = pathname === "/";
   const isAuthPage = pathname.startsWith("/auth");
   const isOnboardingPage = pathname.startsWith("/onboarding");
+  const isMyHousesPage = pathname.startsWith("/my-houses");
   const isInvitationAcceptPage = pathname.startsWith("/invitations/accept");
   const isHousePage = pathname.startsWith("/house");
   const isAppPage =
@@ -28,6 +29,7 @@ export function middleware(request: NextRequest) {
     isRoot ||
     isAuthPage ||
     isOnboardingPage ||
+    isMyHousesPage ||
     isInvitationAcceptPage ||
     isHousePage ||
     isAppPage ||

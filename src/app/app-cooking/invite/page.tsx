@@ -129,7 +129,7 @@ export default function InviteMembersPage() {
         )}
 
         <div className="mt-5 flex justify-center">
-          <Link href="/" className="btn-secondary">
+          <Link href="/my-houses" className="btn-secondary">
             Finish for now
           </Link>
         </div>
