@@ -72,6 +72,8 @@ export interface HouseResponse {
 }
 
 export type HouseInvitation = Record<string, unknown>;
+export type ExpenseSummary = Record<string, unknown>;
+export type AnalyticsSummary = Record<string, unknown>;
 
 function getFirebaseApp() {
   return getApps().length ? getApp() : initializeApp(firebaseConfig);
@@ -347,6 +349,54 @@ export async function acceptInvitation(token: string) {
     {
       method: "POST",
       body: JSON.stringify({ token }),
+    }
+  );
+}
+
+export async function getHouseById(houseId: string) {
+  return apiRequest<HouseResponse>(
+    `/houses/${houseId}`,
+    {
+      method: "GET",
+    }
+  );
+}
+
+export async function listHouses() {
+  return apiRequest<HouseResponse[]>(
+    "/houses",
+    {
+      method: "GET",
+    }
+  );
+}
+
+export async function listExpenses(params?: {
+  page?: number;
+  limit?: number;
+  category?: string;
+  memberId?: string;
+}) {
+  const query = new URLSearchParams();
+  if (params?.page) query.set("page", String(params.page));
+  if (params?.limit) query.set("limit", String(params.limit));
+  if (params?.category) query.set("category", params.category);
+  if (params?.memberId) query.set("memberId", params.memberId);
+
+  const suffix = query.toString() ? `?${query.toString()}` : "";
+  return apiRequest<ExpenseSummary[] | { expenses?: ExpenseSummary[] }>(
+    `/expenses${suffix}`,
+    {
+      method: "GET",
+    }
+  );
+}
+
+export async function getAnalytics() {
+  return apiRequest<AnalyticsSummary>(
+    "/analytics",
+    {
+      method: "GET",
     }
   );
 }

@@ -13,6 +13,12 @@ export function middleware(request: NextRequest) {
   const isRoot = pathname === "/";
   const isOnboardingPage = pathname.startsWith("/onboarding");
   const isInvitationAcceptPage = pathname.startsWith("/invitations/accept");
+  const isHousePage = pathname.startsWith("/house");
+  const isAppPage =
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/members") ||
+    pathname.startsWith("/expenses") ||
+    pathname.startsWith("/analytics");
   const isApi = pathname.startsWith("/api");
   const isNextAsset = pathname.startsWith("/_next");
   const isPublicFile = /\.[^/]+$/.test(pathname);
@@ -21,6 +27,8 @@ export function middleware(request: NextRequest) {
     isRoot ||
     isOnboardingPage ||
     isInvitationAcceptPage ||
+    isHousePage ||
+    isAppPage ||
     isApi ||
     isNextAsset ||
     isPublicFile

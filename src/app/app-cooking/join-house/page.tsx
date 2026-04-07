@@ -15,6 +15,7 @@ import { LogoMark } from "@/components/ui/logo";
 import {
   acceptInvitation,
   getSavedSession,
+  listHouses,
   listHouseInvitations,
   saveHouse,
   saveSession,
@@ -59,16 +60,34 @@ export default function JoinHousePage() {
   }, []);
 
   useEffect(() => {
-    if (!session || !houseId) return;
+    if (!session) return;
 
     let cancelled = false;
     const loadInvitations = async () => {
       try {
         setLoadingInvites(true);
         setError("");
-        const response = await listHouseInvitations(houseId);
+        if (houseId) {
+          const response = await listHouseInvitations(houseId);
+          if (!cancelled) {
+            setInvitations(response);
+          }
+          return;
+        }
+
+        const houses = await listHouses();
+        const settled = await Promise.all(
+          houses.map(async (house) => {
+            const list = await listHouseInvitations(house.id);
+            return list.map((invitation) => ({
+              ...invitation,
+              houseId: invitation.houseId ?? house.id,
+              houseName: invitation.houseName ?? house.name,
+            }));
+          })
+        );
         if (!cancelled) {
-          setInvitations(response);
+          setInvitations(settled.flat());
         }
       } catch (err) {
         if (!cancelled) {
@@ -105,6 +124,10 @@ export default function JoinHousePage() {
     getTextValue(activeInvitation, ["houseName", "name", "house"]) ||
     (houseId ? `House ${houseId.slice(0, 8)}` : "Invited House");
   const invitedEmail = getTextValue(activeInvitation, ["email", "invitedEmail"]);
+  const resolvedToken =
+    token || getTextValue(activeInvitation, ["token", "invitationToken"]);
+  const resolvedHouseId =
+    houseId || getTextValue(activeInvitation, ["houseId", "house"]);
 
   const handleGoogleSignIn = async () => {
     try {
@@ -123,7 +146,7 @@ export default function JoinHousePage() {
   };
 
   const handleAcceptInvitation = async () => {
-    if (!token) {
+    if (!resolvedToken) {
       setError("Invitation token missing in link.");
       return;
     }
@@ -136,10 +159,10 @@ export default function JoinHousePage() {
       setError("");
       setStatus("");
       setAccepting(true);
-      const joinedHouse = await acceptInvitation(token);
+      const joinedHouse = await acceptInvitation(resolvedToken);
       saveHouse(joinedHouse);
       setStatus(`You joined ${joinedHouse.name} successfully.`);
-      router.push(`/onboarding/invite?houseId=${joinedHouse.id}`);
+      router.push(`/house/${joinedHouse.id}?joined=1`);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to accept invitation.";
@@ -175,8 +198,8 @@ export default function JoinHousePage() {
           <p className="text-xs text-sand-500">
             {loadingInvites
               ? "Loading invitation details..."
-              : houseId
-                ? `House ID: ${houseId}`
+              : resolvedHouseId
+                ? `House ID: ${resolvedHouseId}`
                 : "House ID not present in link. Acceptance still works with token."}
           </p>
         </div>
@@ -214,7 +237,7 @@ export default function JoinHousePage() {
             type="button"
             className="btn-primary mt-6 w-full"
             onClick={handleAcceptInvitation}
-            disabled={accepting || !token}
+            disabled={accepting || !resolvedToken}
           >
             {accepting ? (
               <>
