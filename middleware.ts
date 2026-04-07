@@ -12,11 +12,19 @@ export function middleware(request: NextRequest) {
 
   const isRoot = pathname === "/";
   const isOnboardingPage = pathname.startsWith("/onboarding");
+  const isInvitationAcceptPage = pathname.startsWith("/invitations/accept");
   const isApi = pathname.startsWith("/api");
   const isNextAsset = pathname.startsWith("/_next");
   const isPublicFile = /\.[^/]+$/.test(pathname);
 
-  if (isRoot || isOnboardingPage || isApi || isNextAsset || isPublicFile) {
+  if (
+    isRoot ||
+    isOnboardingPage ||
+    isInvitationAcceptPage ||
+    isApi ||
+    isNextAsset ||
+    isPublicFile
+  ) {
     return NextResponse.next();
   }
 
