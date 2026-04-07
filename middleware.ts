@@ -11,6 +11,7 @@ export function middleware(request: NextRequest) {
   }
 
   const isRoot = pathname === "/";
+  const isAuthPage = pathname.startsWith("/auth");
   const isOnboardingPage = pathname.startsWith("/onboarding");
   const isInvitationAcceptPage = pathname.startsWith("/invitations/accept");
   const isHousePage = pathname.startsWith("/house");
@@ -25,6 +26,7 @@ export function middleware(request: NextRequest) {
 
   if (
     isRoot ||
+    isAuthPage ||
     isOnboardingPage ||
     isInvitationAcceptPage ||
     isHousePage ||
@@ -37,7 +39,7 @@ export function middleware(request: NextRequest) {
   }
 
   const url = request.nextUrl.clone();
-  url.pathname = "/onboarding";
+  url.pathname = "/auth";
   url.searchParams.set("from", pathname);
   return NextResponse.redirect(url);
 }

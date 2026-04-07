@@ -676,7 +676,7 @@ export default function LandingPage() {
                 How it Works
               </a>
               <Link
-                href="/onboarding"
+                href="/auth"
                 className={`inline-flex items-center gap-1.5 font-medium text-white transition-all active:scale-[0.97] shadow-lg shadow-sand-900/10 ${
                   navScrolled
                     ? "px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-sand-900 text-xs sm:text-sm hover:bg-sand-800"
@@ -758,7 +758,7 @@ export default function LandingPage() {
             className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
           >
             <Link
-              href="/onboarding"
+              href="/auth"
               className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-haveli-600 to-haveli-700 text-white font-semibold text-base overflow-hidden shadow-2xl shadow-haveli-600/25 hover:shadow-haveli-600/40 active:scale-[0.97] transition-all duration-200"
             >
               <span className="relative z-10 flex items-center gap-3">
@@ -1142,7 +1142,7 @@ export default function LandingPage() {
               </div>
 
               <Link
-                href="/onboarding"
+                href="/auth"
                 className="group relative inline-flex items-center gap-3 px-9 py-4 sm:px-10 sm:py-5 rounded-2xl bg-gradient-to-r from-haveli-500 to-haveli-600 text-white font-semibold text-base sm:text-lg overflow-hidden shadow-2xl shadow-haveli-600/40 hover:shadow-haveli-600/60 active:scale-[0.97] transition-all duration-200"
               >
                 <span className="relative z-10 flex items-center gap-3">

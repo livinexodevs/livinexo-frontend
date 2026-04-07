@@ -147,7 +147,7 @@ export default function JoinHousePage() {
 
   const handleAcceptInvitation = async () => {
     if (!resolvedToken) {
-      setError("Invitation token missing in link.");
+      setError("This invite link looks incomplete. Please open the latest invite email.");
       return;
     }
     if (!session) {
@@ -183,7 +183,7 @@ export default function JoinHousePage() {
           Join house invitation
         </h1>
         <p className="mt-2 text-sm text-sand-600">
-          Opened from your invitation mail. Review the house details and accept to
+          You opened this from an invite email. Review the house details and tap to
           join.
         </p>
 
@@ -200,7 +200,7 @@ export default function JoinHousePage() {
               ? "Loading invitation details..."
               : resolvedHouseId
                 ? `House ID: ${resolvedHouseId}`
-                : "House ID not present in link. Acceptance still works with token."}
+                : "House details will appear as soon as they load."}
           </p>
         </div>
 
@@ -275,7 +275,7 @@ export default function JoinHousePage() {
 
         <p className="mt-4 text-xs text-sand-500 inline-flex items-center gap-1">
           <MailOpen className="w-3 h-3" />
-          Invite links should include query params like `?houseId=...&token=...`.
+          If this invite does not work, ask the house admin to resend it.
         </p>
       </section>
     </main>

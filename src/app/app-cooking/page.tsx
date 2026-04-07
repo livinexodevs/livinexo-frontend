@@ -1,21 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   CheckCircle2,
   Home,
-  Loader2,
   ShieldCheck,
   Sparkles,
   Users,
 } from "lucide-react";
 import { LogoMark } from "@/components/ui/logo";
 import {
+  getSavedSession,
   saveIntent,
-  saveSession,
-  signInWithGoogle,
   type OnboardingIntent,
 } from "@/lib/onboarding";
 
@@ -41,11 +39,11 @@ const cards: {
   },
   {
     title: "Join Existing House",
-    description: "Continue with Google and join a house shared with you.",
+    description: "Join a house shared with you via invitation.",
     intent: "join",
     stats: "Fastest way to get started",
     points: [
-      "Authenticate with Google in one click",
+      "Open your invitation link",
       "Join your shared house workflow",
       "Continue from invitation details",
     ],
@@ -55,10 +53,16 @@ const cards: {
 
 export default function AppCookingPage() {
   const router = useRouter();
-  const [loadingIntent, setLoadingIntent] = useState<OnboardingIntent | null>(
-    null
-  );
-  const [error, setError] = useState("");
+  const [error] = useState("");
+
+  useEffect(() => {
+    const session = getSavedSession();
+    if (!session) {
+      const params =
+        typeof window !== "undefined" ? window.location.search : "";
+      router.replace(`/auth${params}`);
+    }
+  }, [router]);
 
   const buildJoinRoute = () => {
     if (typeof window === "undefined") return "/onboarding/join-house";
@@ -75,21 +79,9 @@ export default function AppCookingPage() {
     return query ? `/onboarding/join-house?${query}` : "/onboarding/join-house";
   };
 
-  const handleSelect = async (intent: OnboardingIntent) => {
-    try {
-      setError("");
-      setLoadingIntent(intent);
-      saveIntent(intent);
-      const session = await signInWithGoogle();
-      saveSession(session);
-      router.push(intent === "create" ? "/onboarding/create-house" : buildJoinRoute());
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Google login failed. Please try again.";
-      setError(message);
-    } finally {
-      setLoadingIntent(null);
-    }
+  const handleSelect = (intent: OnboardingIntent) => {
+    saveIntent(intent);
+    router.push(intent === "create" ? "/onboarding/create-house" : buildJoinRoute());
   };
 
   return (
@@ -112,8 +104,7 @@ export default function AppCookingPage() {
               Set up your household in under a minute
             </h1>
             <p className="mt-3 text-sand-600 text-sm sm:text-base">
-              Choose your path. We will securely continue with Google and then
-              move you to the right flow.
+              Your account is ready. Choose how you want to continue.
             </p>
 
             <div className="mt-6 grid gap-3">
@@ -123,7 +114,7 @@ export default function AppCookingPage() {
                 </p>
                 <p className="mt-1 text-sm font-medium text-sand-800 inline-flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  Google authentication protected
+                  You are signed in and ready to continue
                 </p>
               </div>
               <div className="rounded-xl border border-sand-200 bg-sand-100/60 px-4 py-3">
@@ -139,14 +130,12 @@ export default function AppCookingPage() {
 
           <div className="grid gap-4 sm:gap-5">
             {cards.map((card) => {
-              const isLoading = loadingIntent === card.intent;
               return (
                 <button
                   type="button"
                   key={card.intent}
-                  disabled={Boolean(loadingIntent)}
                   onClick={() => handleSelect(card.intent)}
-                  className="group card p-6 sm:p-7 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:border-haveli-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="group card p-6 sm:p-7 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:border-haveli-200"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -178,17 +167,8 @@ export default function AppCookingPage() {
                   </div>
 
                   <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-haveli-700">
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Signing in...
-                      </>
-                    ) : (
-                      <>
-                        Continue with Google
-                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                      </>
-                    )}
+                    Continue
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </div>
                 </button>
               );

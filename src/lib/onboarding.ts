@@ -126,6 +126,21 @@ interface GoogleAuthApiResponse {
   accessToken: string;
 }
 
+function sanitizeApiMessage(message: string, fallback: string): string {
+  const normalized = message.toLowerCase();
+
+  if (
+    normalized.includes("jdbc exception") ||
+    normalized.includes("select distinct") ||
+    normalized.includes("sql [n/a]") ||
+    normalized.includes("lower(bytea)")
+  ) {
+    return fallback;
+  }
+
+  return message;
+}
+
 function saveTokenCache(cache: TokenCache) {
   if (typeof window === "undefined") return;
   localStorage.setItem(TOKEN_CACHE_KEY, JSON.stringify(cache));
@@ -225,7 +240,10 @@ async function exchangeGoogleToken(idToken: string): Promise<GoogleAuthApiRespon
     let message = "Failed to verify Google login with backend.";
     try {
       const data = await res.json();
-      message = data?.message ?? data?.error ?? message;
+      message = sanitizeApiMessage(
+        data?.message ?? data?.error ?? message,
+        "Unable to complete login right now. Please try again."
+      );
     } catch {
       message = `${message} (${res.status})`;
     }
@@ -301,7 +319,10 @@ async function apiRequest<T>(
     let message = "Request failed";
     try {
       const data = await res.json();
-      message = data?.message ?? data?.error ?? message;
+      message = sanitizeApiMessage(
+        data?.message ?? data?.error ?? message,
+        "Something went wrong while loading house data. Please try again."
+      );
     } catch {
       message = `${message} (${res.status})`;
     }

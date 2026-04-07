@@ -8,6 +8,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isPublicPage =
     pathname === "/" ||
+    pathname.startsWith("/auth") ||
     pathname.startsWith("/onboarding") ||
     pathname.startsWith("/app-cooking");
 
