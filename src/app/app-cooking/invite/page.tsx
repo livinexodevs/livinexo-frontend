@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Loader2, MailPlus, Send } from "lucide-react";
 import { LogoMark } from "@/components/ui/logo";
 import {
@@ -13,22 +13,25 @@ import {
 
 export default function InviteMembersPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const [houseId, setHouseId] = useState("");
 
   const session = getSavedSession();
   const savedHouse = getSavedHouse();
-  const houseId = searchParams.get("houseId") ?? savedHouse?.id ?? "";
 
   useEffect(() => {
     if (!session) {
       router.replace("/onboarding");
+      return;
     }
-  }, [router, session]);
+
+    const fromQuery = new URLSearchParams(window.location.search).get("houseId");
+    setHouseId(fromQuery ?? savedHouse?.id ?? "");
+  }, [router, savedHouse?.id, session]);
 
   const handleSendInvite = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
