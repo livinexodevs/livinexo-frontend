@@ -71,6 +71,8 @@ export interface HouseResponse {
   updatedAt: string;
 }
 
+export type HouseInvitation = Record<string, unknown>;
+
 function getFirebaseApp() {
   return getApps().length ? getApp() : initializeApp(firebaseConfig);
 }
@@ -326,6 +328,25 @@ export async function sendHouseInvitation(
     {
       method: "POST",
       body: JSON.stringify({ email }),
+    }
+  );
+}
+
+export async function listHouseInvitations(houseId: string) {
+  return apiRequest<HouseInvitation[]>(
+    `/houses/${houseId}/invitations`,
+    {
+      method: "GET",
+    }
+  );
+}
+
+export async function acceptInvitation(token: string) {
+  return apiRequest<HouseResponse>(
+    "/invitations/accept",
+    {
+      method: "POST",
+      body: JSON.stringify({ token }),
     }
   );
 }
