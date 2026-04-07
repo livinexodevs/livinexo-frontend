@@ -91,25 +91,31 @@ const features = [
 
 const steps = [
   {
-    num: "01",
     title: "Add Your Members",
     description:
       "Set up your household in seconds — add family, roommates, or anyone sharing expenses.",
     icon: Users,
+    artBg: "from-haveli-100 via-orange-50 to-white",
+    chipA: "Roommates",
+    chipB: "Family",
   },
   {
-    num: "02",
     title: "Log Every Expense",
     description:
       "Search items, pick quantities and units, set the price. Smart autocomplete does the heavy lifting.",
     icon: Receipt,
+    artBg: "from-blue-100 via-indigo-50 to-white",
+    chipA: "Groceries",
+    chipB: "Utilities",
   },
   {
-    num: "03",
     title: "Track & Settle Up",
     description:
       "See real-time splits, tap to settle, and check analytics to know exactly where your money flows.",
     icon: CheckCircle2,
+    artBg: "from-emerald-100 via-teal-50 to-white",
+    chipA: "Insights",
+    chipB: "Settled",
   },
 ];
 
@@ -348,6 +354,9 @@ export default function LandingPage() {
   }, [handleScroll]);
 
   useEffect(() => {
+    // Heavy scroll animations can feel laggy on smaller devices.
+    if (window.matchMedia("(max-width: 768px)").matches) return;
+
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
@@ -534,18 +543,6 @@ export default function LandingPage() {
         ease: "power3.out",
       });
 
-      // Progress line draws down
-      gsap.from("[data-steps-progress]", {
-        scrollTrigger: {
-          trigger: "[data-steps-progress]",
-          start: "top 80%",
-          end: "bottom 60%",
-          scrub: 1,
-        },
-        scaleY: 0,
-        transformOrigin: "top center",
-      });
-
       gsap.utils.toArray<HTMLElement>("[data-step-card]").forEach((step, i) => {
         gsap.from(step, {
           scrollTrigger: {
@@ -558,21 +555,6 @@ export default function LandingPage() {
           delay: i * 0.15,
           ease: "power3.out",
         });
-
-        const num = step.querySelector("[data-step-num]");
-        if (num) {
-          gsap.from(num, {
-            scrollTrigger: {
-              trigger: step,
-              start: "top 88%",
-            },
-            scale: 0,
-            rotation: -180,
-            duration: 0.8,
-            delay: i * 0.15 + 0.2,
-            ease: "back.out(1.7)",
-          });
-        }
       });
 
       // --- Stats counters triggered via AnimatedCounter component ---
@@ -694,7 +676,7 @@ export default function LandingPage() {
                 How it Works
               </a>
               <Link
-                href="/app-cooking"
+                href="/onboarding"
                 className={`inline-flex items-center gap-1.5 font-medium text-white transition-all active:scale-[0.97] shadow-lg shadow-sand-900/10 ${
                   navScrolled
                     ? "px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-sand-900 text-xs sm:text-sm hover:bg-sand-800"
@@ -776,7 +758,7 @@ export default function LandingPage() {
             className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
           >
             <Link
-              href="/app-cooking"
+              href="/onboarding"
               className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-haveli-600 to-haveli-700 text-white font-semibold text-base overflow-hidden shadow-2xl shadow-haveli-600/25 hover:shadow-haveli-600/40 active:scale-[0.97] transition-all duration-200"
             >
               <span className="relative z-10 flex items-center gap-3">
@@ -1034,36 +1016,33 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="relative">
-            {/* Animated progress line */}
-            <div className="absolute left-[27px] sm:left-[35px] top-4 bottom-4 w-[3px] bg-sand-200 rounded-full overflow-hidden hidden sm:block">
-              <div
-                data-steps-progress
-                className="w-full h-full bg-gradient-to-b from-haveli-500 to-haveli-300 rounded-full"
-              />
-            </div>
-
-            <div className="space-y-4 sm:space-y-6">
+          <div className="space-y-4 sm:space-y-6">
               {steps.map((step) => (
                 <div
-                  key={step.num}
+                  key={step.title}
                   data-step-card
-                  className="relative flex gap-5 sm:gap-8"
+                  className="relative bg-white rounded-2xl sm:rounded-3xl border border-sand-100 p-5 sm:p-7 hover:shadow-lg hover:border-sand-200 transition-all duration-300"
                 >
-                  {/* Step number */}
-                  <div
-                    data-step-num
-                    className="relative z-10 flex-shrink-0 w-[56px] h-[56px] sm:w-[72px] sm:h-[72px] rounded-2xl bg-gradient-to-br from-haveli-500 to-haveli-700 flex items-center justify-center shadow-xl shadow-haveli-600/20"
-                  >
-                    <span className="text-white font-bold text-base sm:text-xl">
-                      {step.num}
-                    </span>
-                  </div>
-
-                  {/* Card */}
-                  <div className="flex-1 bg-white rounded-2xl sm:rounded-3xl border border-sand-100 p-5 sm:p-7 hover:shadow-lg hover:border-sand-200 transition-all duration-300">
+                  <div className="grid sm:grid-cols-[190px_1fr] gap-5 sm:gap-7 items-center">
+                    <div className={`relative h-28 rounded-2xl border border-white/70 bg-gradient-to-br ${step.artBg} p-4 overflow-hidden`}>
+                      <div className="absolute -top-5 -right-6 w-20 h-20 rounded-full bg-white/60 blur-xl" />
+                      <div className="absolute -bottom-6 -left-4 w-16 h-16 rounded-full bg-white/40 blur-lg" />
+                      <div className="relative z-10">
+                        <div className="w-10 h-10 rounded-xl bg-white/90 shadow-sm flex items-center justify-center">
+                          <step.icon className="w-5 h-5 text-sand-800" />
+                        </div>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          <span className="text-[11px] px-2 py-1 rounded-full bg-white/90 border border-sand-200 text-sand-700 font-medium">
+                            {step.chipA}
+                          </span>
+                          <span className="text-[11px] px-2 py-1 rounded-full bg-white/90 border border-sand-200 text-sand-700 font-medium">
+                            {step.chipB}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     <div className="flex items-start gap-4">
-                      <div className="hidden sm:flex w-11 h-11 rounded-xl bg-haveli-50 items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="hidden sm:flex w-11 h-11 rounded-xl bg-haveli-50 items-center justify-center flex-shrink-0 mt-0.5 border border-haveli-100">
                         <step.icon className="w-5 h-5 text-haveli-600" />
                       </div>
                       <div>
@@ -1078,7 +1057,6 @@ export default function LandingPage() {
                   </div>
                 </div>
               ))}
-            </div>
           </div>
         </div>
       </section>
@@ -1164,7 +1142,7 @@ export default function LandingPage() {
               </div>
 
               <Link
-                href="/app-cooking"
+                href="/onboarding"
                 className="group relative inline-flex items-center gap-3 px-9 py-4 sm:px-10 sm:py-5 rounded-2xl bg-gradient-to-r from-haveli-500 to-haveli-600 text-white font-semibold text-base sm:text-lg overflow-hidden shadow-2xl shadow-haveli-600/40 hover:shadow-haveli-600/60 active:scale-[0.97] transition-all duration-200"
               >
                 <span className="relative z-10 flex items-center gap-3">
